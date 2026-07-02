@@ -1,0 +1,44 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+/dev.db
+/dev.db-journal
+/dev.db-wal
+/dev.db-shm
+*.db-journal
+*.db-wal
+*.db-shm
+
+# debug
+*.log
+npm-debug.log*
+
+# env files
+.env*
+!.env.example
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+/src/generated/prisma
+
+# python (legacy CLI)
+__pycache__/
+*.pyc
+.venv/

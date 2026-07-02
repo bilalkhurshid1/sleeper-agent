@@ -1,0 +1,47 @@
+// Dynasty fantasy football coach data model — single-tenant (one league, one user).
+// SQLite for now; league/user identity stays in env config, not the DB.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model CoachSession {
+  id         String    @id @default(cuid())
+  title      String    @default("New session")
+  archivedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  messages ChatMessage[]
+
+  @@index([createdAt])
+  @@index([archivedAt, updatedAt])
+}
+
+model ChatMessage {
+  id          String        @id @default(cuid())
+  role        String
+  content     String
+  provider    String?
+  model       String?
+  contextJson String?
+  createdAt   DateTime      @default(now())
+  sessionId   String?
+  session     CoachSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@index([sessionId, createdAt])
+}
+
+model Settings {
+  id                   String   @id @default("default")
+  provider             String   @default("anthropic")
+  model                String   @default("claude-opus-4-8")
+  systemPromptOverride String?
+  updatedAt            DateTime @updatedAt
+}
