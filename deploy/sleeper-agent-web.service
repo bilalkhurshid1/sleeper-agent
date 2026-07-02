@@ -1,0 +1,17 @@
+[Unit]
+Description=Sleeper Dynasty Fantasy Football AI Coach
+After=network.target
+
+[Service]
+Type=simple
+User=bilal
+WorkingDirectory=/home/bilal/sleeper-agent
+Environment=NODE_ENV=production
+Environment=PORT=5181
+EnvironmentFile=/home/bilal/sleeper-agent/.env
+ExecStart=/usr/bin/node node_modules/.bin/next start -p 5181
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

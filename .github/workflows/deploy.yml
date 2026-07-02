@@ -1,0 +1,32 @@
+name: Deploy production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to atlas host
+    runs-on:
+      - self-hosted
+      - linux
+      - sleeper-agent-prod
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Deploy local service checkout
+        env:
+          DEPLOY_APP_DIR: /home/bilal/sleeper-agent
+          DEPLOY_BRANCH: main
+          DEPLOY_SERVICE: sleeper-agent-web.service
+          DEPLOY_HEALTH_URL: http://192.168.1.114:5181/api/health
+        run: bash deploy/deploy-production.sh
